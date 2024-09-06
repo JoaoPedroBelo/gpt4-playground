@@ -1,5 +1,4 @@
 import React, { PropsWithChildren } from "react";
-import secureLocalStorage from "react-secure-storage";
 
 const defaultContext = {
   token: "",
@@ -17,7 +16,9 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
   const [token, setToken] = React.useState("");
 
   React.useEffect(() => {
-    const token = secureLocalStorage.getItem("open-ai-token") as string;
+    const token = localStorage.getItem("open-ai-token") as string;
+
+    console.log(token)
     if (token) {
       setToken(token);
     }
@@ -25,12 +26,12 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
 
   const addToken = (token: string) => {
     setToken(token);
-    secureLocalStorage.setItem("open-ai-token", token);
+    localStorage.setItem("open-ai-token", token);
   };
 
   const clearToken = () => {
     setToken("");
-    secureLocalStorage.removeItem("open-ai-token");
+    localStorage.removeItem("open-ai-token");
   };
 
   const value = React.useMemo(() => ({ token, addToken, clearToken }), [token]);
